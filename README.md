@@ -19,7 +19,9 @@ $ composer require scheb/idea-inspections-checkstyle-converter
 Usage
 -----
 
-TBD 
+```bash
+./vendor/bin/inspection-converter <projectRoot> <inspectionsFolder> <checkstyleOutputFile>
+```
 
 Contribute
 ----------
