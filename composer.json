@@ -1,0 +1,36 @@
+{
+    "name": "scheb/idea-inspections-checkstyle-converter",
+    "description": "Convert IDEA inspection XML format to checkstyle",
+    "keywords": ["idea", "phpstorm", "intellij", "jetbrains", "inspections", "checkstyle", "convert"],
+    "homepage": "https://github.com/scheb/idea-inspections-checkstyle-converter",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Scheb",
+            "email": "me@christianscheb.de"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "symfony/console": "^2.7|^3.0|^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.4"
+    },
+    "bin": [
+        "inspection-converter"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Scheb\\InspectionConverter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Scheb\\InspectionConverter\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
