@@ -12,9 +12,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Command extends AbstractCommand
 {
-    public const ARG_PROJECT_PATH = 'projectPath';
+    public const ARG_PROJECT_ROOT = 'projectRoot';
     public const ARG_INSPECTIONS_FOLDER = 'inspectionsFolder';
-    public const ARG_CHECKSTYLE_OUTPUT = 'checkstyleOutput';
+    public const ARG_CHECKSTYLE_OUTPUT_FILE = 'checkstyleOutputFile';
 
     /**
      * @var InputInterface
@@ -30,9 +30,9 @@ class Command extends AbstractCommand
     {
         $this
             ->setName('convert')
-            ->addArgument(self::ARG_PROJECT_PATH, InputArgument::REQUIRED, 'Path to the project root')
+            ->addArgument(self::ARG_PROJECT_ROOT, InputArgument::REQUIRED, 'Path to the project root')
             ->addArgument(self::ARG_INSPECTIONS_FOLDER, InputArgument::REQUIRED, 'Folder with the inspections XML files')
-            ->addArgument(self::ARG_CHECKSTYLE_OUTPUT, InputArgument::REQUIRED, 'Folder with the inspections XML files');
+            ->addArgument(self::ARG_CHECKSTYLE_OUTPUT_FILE, InputArgument::REQUIRED, 'Folder with the inspections XML files');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -53,23 +53,23 @@ class Command extends AbstractCommand
 
     private function doExecute(): void
     {
-        $projectPath = realpath($this->input->getArgument(self::ARG_PROJECT_PATH));
+        $projectRoot = realpath($this->input->getArgument(self::ARG_PROJECT_ROOT));
 
         $inspectionsFolder = realpath($this->input->getArgument(self::ARG_INSPECTIONS_FOLDER));
         if (false === $inspectionsFolder || !is_dir($inspectionsFolder)) {
             throw new \InvalidArgumentException('Argument "'.self::ARG_INSPECTIONS_FOLDER.'" must be a path to a folder');
         }
 
-        $checkstyleFile = $this->input->getArgument(self::ARG_CHECKSTYLE_OUTPUT);
+        $checkstyleFile = $this->input->getArgument(self::ARG_CHECKSTYLE_OUTPUT_FILE);
         $checkstyleFileDir = realpath(dirname($checkstyleFile));
         $checkstyleFileRealPath = realpath($checkstyleFile);
 
         if ($checkstyleFileDir === false || !is_writeable($checkstyleFileDir) || ($checkstyleFileRealPath !== false && !is_writeable($checkstyleFileRealPath))) {
-            throw new \InvalidArgumentException('Argument "'.self::ARG_CHECKSTYLE_OUTPUT.'" must be a path to writable file');
+            throw new \InvalidArgumentException('Argument "'.self::ARG_CHECKSTYLE_OUTPUT_FILE.'" must be a path to writable file');
         }
 
         $inspectionsFiles = $this->findXmlFiles($inspectionsFolder);
-        $problemsByFile = $this->readInspections($inspectionsFiles, $projectPath);
+        $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot);
         $this->writeCheckstyle($problemsByFile, $checkstyleFile);
     }
 
@@ -82,14 +82,14 @@ class Command extends AbstractCommand
         return $inspectionsFiles;
     }
 
-    private function readInspections(array $inspectionsFiles, string $projectPath): array
+    private function readInspections(array $inspectionsFiles, string $projectRoot): array
     {
         $this->output->write('Read inspections ...');
         $numFiles = 0;
         $numProblems = 0;
         $problemsByFile = [];
         foreach ($inspectionsFiles as $inspectionsFile) {
-            $problems = ProblemIterator::create($inspectionsFile, $projectPath);
+            $problems = ProblemIterator::create($inspectionsFile, $projectRoot);
             /** @var Problem $problem */
             foreach ($problems as $problem) {
                 $filename = $problem->getFilename();

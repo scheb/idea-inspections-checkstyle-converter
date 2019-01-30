@@ -4,16 +4,16 @@ namespace Scheb\InspectionConverter\Inspection;
 
 class ProblemFactory
 {
-    public function create(string $projectPath, string $xmlFilename, \SimpleXMLElement $problemXml): Problem
+    public function create(string $projectRoot, string $xmlFilename, \SimpleXMLElement $problemXml): Problem
     {
-        $projectPathEnd = substr($projectPath, -1);
-        if ('/' === $projectPathEnd || '\\' === $projectPathEnd) {
-            $projectPath = substr($projectPath, 0, -1);
+        $projectRootEnd = substr($projectRoot, -1);
+        if ('/' === $projectRootEnd || '\\' === $projectRootEnd) {
+            $projectRoot = substr($projectRoot, 0, -1);
         }
 
         $problem = new Problem(
             $this->getInspectionName($xmlFilename),
-            $this->getFilename($projectPath, $problemXml),
+            $this->getFilename($projectRoot, $problemXml),
             (int) $problemXml->line,
             (string) $problemXml->problem_class,
             (string) $problemXml->problem_class['severity'],
@@ -30,8 +30,8 @@ class ProblemFactory
         return $match[1] ?? 'UNKNOWN';
     }
 
-    private function getFilename(string $projectPath, \SimpleXMLElement $problemXml): string
+    private function getFilename(string $projectRoot, \SimpleXMLElement $problemXml): string
     {
-        return str_replace('file://$PROJECT_DIR$/', $projectPath.'/', (string) $problemXml->file);
+        return str_replace('file://$PROJECT_DIR$/', $projectRoot.'/', (string) $problemXml->file);
     }
 }

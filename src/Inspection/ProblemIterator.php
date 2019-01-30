@@ -19,18 +19,18 @@ class ProblemIterator implements \IteratorAggregate
     /**
      * @var string
      */
-    private $projectPath;
+    private $projectRoot;
 
-    public function __construct(string $inspectionsFile, ProblemFactory $problemFactory, string $projectPath)
+    public function __construct(string $inspectionsFile, ProblemFactory $problemFactory, string $projectRoot)
     {
         $this->inspectionsFile = $inspectionsFile;
         $this->problemFactory = $problemFactory;
-        $this->projectPath = $projectPath;
+        $this->projectRoot = $projectRoot;
     }
 
-    public static function create(string $inspectionsFile, string $projectPath): self
+    public static function create(string $inspectionsFile, string $projectRoot): self
     {
-        return new self($inspectionsFile, new ProblemFactory(), $projectPath);
+        return new self($inspectionsFile, new ProblemFactory(), $projectRoot);
     }
 
     public function getIterator(): \Traversable
@@ -38,7 +38,7 @@ class ProblemIterator implements \IteratorAggregate
         $problemXmlIterator = new ProblemXmlIterator(new FileReader($this->inspectionsFile));
         foreach ($problemXmlIterator as $problemXml) {
             $xmlElement = new \SimpleXMLElement($problemXml);
-            yield $this->problemFactory->create($this->projectPath, $this->inspectionsFile, $xmlElement);
+            yield $this->problemFactory->create($this->projectRoot, $this->inspectionsFile, $xmlElement);
         }
     }
 }
