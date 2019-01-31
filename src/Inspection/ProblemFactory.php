@@ -6,11 +6,7 @@ class ProblemFactory
 {
     public function create(string $projectRoot, string $xmlFilename, \SimpleXMLElement $problemXml): Problem
     {
-        $projectRootEnd = substr($projectRoot, -1);
-        if ('/' === $projectRootEnd || '\\' === $projectRootEnd) {
-            $projectRoot = substr($projectRoot, 0, -1);
-        }
-
+        $projectRoot = rtrim($projectRoot, '\\/');
         $problem = new Problem(
             $this->getInspectionName($xmlFilename),
             $this->getFilename($projectRoot, $problemXml),
