@@ -61,7 +61,7 @@ class Command extends AbstractCommand
 
     private function doExecute(): void
     {
-        $projectRoot = realpath($this->input->getOption(self::OPT_PROJECT_ROOT));
+        $projectRoot = $this->input->getOption(self::OPT_PROJECT_ROOT);
         $ignoreInspections = $this->input->getOption(self::OPT_IGNORE_INSPECTION) ?? [];
         $ignoreFiles = $this->input->getOption(self::OPT_IGNORE_FILE) ?? [];
         $ignoreMessages = $this->input->getOption(self::OPT_IGNORE_MESSAGE) ?? [];
