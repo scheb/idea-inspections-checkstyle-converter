@@ -24,7 +24,7 @@ class CheckstyleGenerator
      */
     public function generateFileXmlElement(string $fileName, array $problems): string
     {
-        $xml = sprintf('<file name="%s">'."\n", htmlspecialchars($fileName));
+        $xml = sprintf('  <file name="%s">'."\n", htmlspecialchars($fileName));
         foreach ($problems as $problem) {
             $xml .= sprintf(
                 '    <error line="%s" severity="%s" message="%s" source="%s"/>'."\n",
@@ -34,7 +34,7 @@ class CheckstyleGenerator
                 htmlspecialchars($problem->getInspectionName().'.'.$problem->getClass())
             );
         }
-        $xml .= '</file>';
+        $xml .= '  </file>';
 
         return $xml;
     }

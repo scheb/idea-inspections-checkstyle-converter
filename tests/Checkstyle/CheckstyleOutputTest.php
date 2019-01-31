@@ -47,7 +47,7 @@ class CheckstyleOutputTest extends TestCase
             ->willReturnOnConsecutiveCalls('cs1', 'cs2');
 
         $fileWriter = $this->createMock(FileWriter::class);
-        $this->expectWrites($fileWriter, ["header\n", "cs1\n", "cs2\n", 'footer']);
+        $this->expectWrites($fileWriter, ["header\n", "cs1\n", "cs2\n", "footer\n"]);
 
         $output = new CheckstyleOutput($checkstyleGenerator, $fileWriter);
         $output->outputCheckstyle($problemSummary);

@@ -39,7 +39,7 @@ class CheckstyleOutput
             $xml = $this->checkstyleGenerator->generateFileXmlElement($fileName, $problems);
             $this->fileWriter->write($xml."\n");
         }
-        $this->fileWriter->write($this->checkstyleGenerator->getFooter());
+        $this->fileWriter->write($this->checkstyleGenerator->getFooter()."\n");
     }
 
     private function sortProblemsByLine(array $fileProblems): array
