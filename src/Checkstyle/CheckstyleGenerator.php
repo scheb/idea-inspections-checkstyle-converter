@@ -2,6 +2,8 @@
 
 namespace Scheb\InspectionConverter\Checkstyle;
 
+use Scheb\InspectionConverter\Inspection\Problem;
+
 class CheckstyleGenerator
 {
     public function getHeader(): string
@@ -15,8 +17,8 @@ class CheckstyleGenerator
     }
 
     /**
-     * @param string                                          $fileName
-     * @param \Scheb\InspectionConverter\Inspection\Problem[] $problems
+     * @param string    $fileName
+     * @param Problem[] $problems
      *
      * @return string
      */
