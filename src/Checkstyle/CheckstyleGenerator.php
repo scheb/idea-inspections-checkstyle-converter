@@ -6,7 +6,7 @@ class CheckstyleGenerator
 {
     public function getHeader(): string
     {
-        return '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<checkstyle version="1.0.0">';
+        return '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<checkstyle version="4.3">';
     }
 
     public function getFooter(): string
@@ -25,10 +25,11 @@ class CheckstyleGenerator
         $xml = sprintf('<file name="%s">'."\n", htmlspecialchars($fileName));
         foreach ($problems as $problem) {
             $xml .= sprintf(
-                '    <error line="%s" column="0" severity="%s" message="%s"/>'."\n",
+                '    <error line="%s" severity="%s" message="%s" source="%s"/>'."\n",
                 $problem->getLine(),
                 htmlspecialchars(strtolower($problem->getSeverity())),
-                htmlspecialchars($problem->getDescription())
+                htmlspecialchars($problem->getDescription()),
+                htmlspecialchars($problem->getInspectionName().'.'.$problem->getClass())
             );
         }
         $xml .= '</file>';
