@@ -1,7 +1,8 @@
 scheb/idea-inspections-checkstyle-converter
 ===========================================
 
-Convert IDEA inspections from JetBrains IDEs (like IntelliJ and PHPStorm) from its XML format to the Checkstyle format.
+Convert inspection results from JetBrains IDEs (like IntelliJ and PHPStorm) from its XML format to the Checkstyle
+format.
 
 [![Build Status](https://travis-ci.org/scheb/idea-inspections-checkstyle-converter.svg?branch=master)](https://travis-ci.org/scheb/idea-inspections-checkstyle-converter)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/scheb/idea-inspections-checkstyle-converter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/scheb/idea-inspections-checkstyle-converter/?branch=master)
@@ -20,7 +21,23 @@ Usage
 -----
 
 ```bash
-./vendor/bin/inspection-converter <projectRoot> <inspectionsFolder> <checkstyleOutputFile>
+./vendor/bin/inspection-converter [inspectionsFolder] [checkstyleOutputFile]
+
+Arguments:
+  inspectionsFolder                         Folder with the inspections XML files
+  checkstyleOutputFile                      Folder with the inspections XML files
+
+Options:
+  -r, --projectRoot=PROJECTROOT             Path to the project root
+  -ii, --ignoreInspection=IGNOREINSPECTION  Ignore inspections matching the regex pattern (multiple values allowed)
+  -im, --ignoreMessage=IGNOREMESSAGE        Ignore messages matching the regex pattern (multiple values allowed)
+  -if, --ignoreFile=IGNOREFILE              Ignore files matching the regex pattern (multiple values allowed)
+```
+
+Example:
+
+```bash
+./vendor/bin/inspection-converter ./inspections ./checkstyle.xml --rootPath=src --ignoreInspection=SpellCheckingInspection --ignoreMessage=type.*long
 ```
 
 Contribute

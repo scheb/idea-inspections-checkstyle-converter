@@ -4,6 +4,7 @@ namespace Scheb\InspectionConverter\Checkstyle;
 
 use Scheb\InspectionConverter\FileSystem\FileWriter;
 use Scheb\InspectionConverter\Inspection\Problem;
+use Scheb\InspectionConverter\Inspection\ProblemSummary;
 
 class CheckstyleOutput
 {
@@ -28,8 +29,9 @@ class CheckstyleOutput
         return new self(new CheckstyleGenerator(), new FileWriter($outputFile));
     }
 
-    public function outputCheckstyle(array $problemsByFile): void
+    public function outputCheckstyle(ProblemSummary $problemSummary): void
     {
+        $problemsByFile = $problemSummary->getProblemsByFile();
         ksort($problemsByFile);
         $this->fileWriter->write($this->checkstyleGenerator->getHeader()."\n");
         foreach ($problemsByFile as $fileName => $problems) {

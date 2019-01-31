@@ -7,6 +7,7 @@ use Scheb\InspectionConverter\Checkstyle\CheckstyleGenerator;
 use Scheb\InspectionConverter\Checkstyle\CheckstyleOutput;
 use Scheb\InspectionConverter\FileSystem\FileWriter;
 use Scheb\InspectionConverter\Inspection\Problem;
+use Scheb\InspectionConverter\Inspection\ProblemSummary;
 use Scheb\InspectionConverter\Test\TestCase;
 
 class CheckstyleOutputTest extends TestCase
@@ -30,6 +31,8 @@ class CheckstyleOutputTest extends TestCase
                 $problemFile1Line1,
             ],
         ];
+        $problemSummary = $this->createMock(ProblemSummary::class);
+        $problemSummary->expects($this->any())->method('getProblemsByFile')->willReturn($problemsPerFile);
 
         $checkstyleGenerator = $this->createMock(CheckstyleGenerator::class);
         $checkstyleGenerator->expects($this->once())->method('getHeader')->willReturn('header');
@@ -47,7 +50,7 @@ class CheckstyleOutputTest extends TestCase
         $this->expectWrites($fileWriter, ["header\n", "cs1\n", "cs2\n", 'footer']);
 
         $output = new CheckstyleOutput($checkstyleGenerator, $fileWriter);
-        $output->outputCheckstyle($problemsPerFile);
+        $output->outputCheckstyle($problemSummary);
     }
 
     private function stubProblemAtLine(int $line): MockObject

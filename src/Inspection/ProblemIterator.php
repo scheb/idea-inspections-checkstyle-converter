@@ -6,10 +6,15 @@ use Scheb\InspectionConverter\FileSystem\FileReader;
 
 class ProblemIterator implements \IteratorAggregate
 {
+    private const CHUNK_BYTES = 1024 * 10;
+    private const XML_START = '<problem>';
+    private const XML_END = '</problem>';
+    private const XML_END_LENGTH = 10;
+
     /**
-     * @var string
+     * @var FileReader
      */
-    private $inspectionsFile;
+    private $fileReader;
 
     /**
      * @var ProblemFactory
@@ -21,24 +26,36 @@ class ProblemIterator implements \IteratorAggregate
      */
     private $projectRoot;
 
-    public function __construct(string $inspectionsFile, ProblemFactory $problemFactory, string $projectRoot)
+    public function __construct(FileReader $fileReader, ProblemFactory $problemFactory, string $projectRoot)
     {
-        $this->inspectionsFile = $inspectionsFile;
+        $this->fileReader = $fileReader;
         $this->problemFactory = $problemFactory;
         $this->projectRoot = $projectRoot;
     }
 
-    public static function create(string $inspectionsFile, string $projectRoot): self
-    {
-        return new self($inspectionsFile, new ProblemFactory(), $projectRoot);
-    }
-
     public function getIterator(): \Traversable
     {
-        $problemXmlIterator = new ProblemXmlIterator(new FileReader($this->inspectionsFile));
-        foreach ($problemXmlIterator as $problemXml) {
-            $xmlElement = new \SimpleXMLElement($problemXml);
-            yield $this->problemFactory->create($this->projectRoot, $this->inspectionsFile, $xmlElement);
+        $inspectionFile = $this->fileReader->getFilePath();
+        foreach ($this->iterateXml() as $problemXml) {
+            yield $this->problemFactory->create($this->projectRoot, $inspectionFile, new \SimpleXMLElement($problemXml));
+        }
+    }
+
+    private function iterateXml(): \Traversable
+    {
+        $chunk = '';
+        while(!$this->fileReader->eof()) {
+            $chunk .= $this->fileReader->read(self::CHUNK_BYTES);
+            while (($startPos = strpos($chunk, self::XML_START)) !== false) {
+                $endPos = strpos($chunk, self::XML_END);
+                if ($endPos === false || $endPos < $startPos) {
+                    break; // End element not found, read another chunk
+                }
+
+                $problem = substr($chunk, $startPos, $endPos + self::XML_END_LENGTH - $startPos);
+                $chunk = substr($chunk, $endPos + self::XML_END_LENGTH);
+                yield $problem;
+            }
         }
     }
 }

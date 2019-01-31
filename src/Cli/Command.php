@@ -3,18 +3,23 @@
 namespace Scheb\InspectionConverter\Cli;
 
 use Scheb\InspectionConverter\Checkstyle\CheckstyleOutput;
-use Scheb\InspectionConverter\Inspection\Problem;
-use Scheb\InspectionConverter\Inspection\ProblemIterator;
+use Scheb\InspectionConverter\Inspection\ProblemAggregator;
+use Scheb\InspectionConverter\Inspection\ProblemIteratorFactory;
+use Scheb\InspectionConverter\Inspection\ProblemSummary;
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Command extends AbstractCommand
 {
-    public const ARG_PROJECT_ROOT = 'projectRoot';
     public const ARG_INSPECTIONS_FOLDER = 'inspectionsFolder';
     public const ARG_CHECKSTYLE_OUTPUT_FILE = 'checkstyleOutputFile';
+    public const OPT_PROJECT_ROOT = 'projectRoot';
+    public const OPT_IGNORE_INSPECTION = 'ignoreInspection';
+    public const OPT_IGNORE_MESSAGE = 'ignoreMessage';
+    public const OPT_IGNORE_FILE = 'ignoreFile';
 
     /**
      * @var InputInterface
@@ -30,9 +35,12 @@ class Command extends AbstractCommand
     {
         $this
             ->setName('convert')
-            ->addArgument(self::ARG_PROJECT_ROOT, InputArgument::REQUIRED, 'Path to the project root')
             ->addArgument(self::ARG_INSPECTIONS_FOLDER, InputArgument::REQUIRED, 'Folder with the inspections XML files')
-            ->addArgument(self::ARG_CHECKSTYLE_OUTPUT_FILE, InputArgument::REQUIRED, 'Folder with the inspections XML files');
+            ->addArgument(self::ARG_CHECKSTYLE_OUTPUT_FILE, InputArgument::REQUIRED, 'Folder with the inspections XML files')
+            ->addOption(self::OPT_PROJECT_ROOT, 'r', InputOption::VALUE_REQUIRED, 'Path to the project root', '')
+            ->addOption(self::OPT_IGNORE_INSPECTION, 'ii', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore inspections matching the regex pattern')
+            ->addOption(self::OPT_IGNORE_MESSAGE, 'im', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore messages matching the regex pattern')
+            ->addOption(self::OPT_IGNORE_FILE, 'if', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -53,7 +61,10 @@ class Command extends AbstractCommand
 
     private function doExecute(): void
     {
-        $projectRoot = realpath($this->input->getArgument(self::ARG_PROJECT_ROOT));
+        $projectRoot = realpath($this->input->getOption(self::OPT_PROJECT_ROOT));
+        $ignoreInspections = $this->input->getOption(self::OPT_IGNORE_INSPECTION) ?? [];
+        $ignoreFiles = $this->input->getOption(self::OPT_IGNORE_FILE) ?? [];
+        $ignoreMessages = $this->input->getOption(self::OPT_IGNORE_MESSAGE) ?? [];
 
         $inspectionsFolder = realpath($this->input->getArgument(self::ARG_INSPECTIONS_FOLDER));
         if (false === $inspectionsFolder || !is_dir($inspectionsFolder)) {
@@ -69,7 +80,7 @@ class Command extends AbstractCommand
         }
 
         $inspectionsFiles = $this->findXmlFiles($inspectionsFolder);
-        $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot);
+        $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot, $ignoreInspections, $ignoreFiles, $ignoreMessages);
         $this->writeCheckstyle($problemsByFile, $checkstyleFile);
     }
 
@@ -82,33 +93,21 @@ class Command extends AbstractCommand
         return $inspectionsFiles;
     }
 
-    private function readInspections(array $inspectionsFiles, string $projectRoot): array
+    private function readInspections(array $inspectionsFiles, string $projectRoot, array $ignoreInspections, array $ignoreFiles, array $ignoreMessages): ProblemSummary
     {
         $this->output->write('Read inspections ...');
-        $numFiles = 0;
-        $numProblems = 0;
-        $problemsByFile = [];
-        foreach ($inspectionsFiles as $inspectionsFile) {
-            $problems = ProblemIterator::create($inspectionsFile, $projectRoot);
-            /** @var Problem $problem */
-            foreach ($problems as $problem) {
-                $filename = $problem->getFilename();
-                if (!isset($problemsByFile[$filename])) {
-                    $problemsByFile[$filename] = [];
-                    ++$numFiles;
-                }
-                $problemsByFile[$filename][] = $problem;
-                ++$numProblems;
-            }
-        }
+
+        $aggregator = new ProblemAggregator(new ProblemIteratorFactory(), $ignoreInspections, $ignoreFiles, $ignoreMessages);
+        $summary = $aggregator->readInspections($inspectionsFiles, $projectRoot);
+
         $this->output->writeln(' Done');
-        $this->output->writeln(sprintf('Found %s results in %s files', $numProblems, $numFiles));
+        $this->output->writeln(sprintf('Found %s results in %s files', $summary->getNumProblems(), $summary->getNumFiles()));
         $this->output->writeln('');
 
-        return $problemsByFile;
+        return $summary;
     }
 
-    private function writeCheckstyle(array $problemsByFile, string $checkstyleFile): void
+    private function writeCheckstyle(ProblemSummary $problemsByFile, string $checkstyleFile): void
     {
         $this->output->write('Write checkstyle file ...');
         $checkstyleOutput = CheckstyleOutput::create($checkstyleFile);

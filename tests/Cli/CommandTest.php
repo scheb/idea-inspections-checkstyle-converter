@@ -43,7 +43,7 @@ class CommandTest extends TestCase
             ->expects($this->any())
             ->method('getArgument')
             ->willReturnMap([
-                [Command::ARG_PROJECT_ROOT, self::PROJECT_PATH],
+                [Command::OPT_PROJECT_ROOT, self::PROJECT_PATH],
                 [Command::ARG_INSPECTIONS_FOLDER, self::INSPECTIONS_DIR],
                 [Command::ARG_CHECKSTYLE_OUTPUT_FILE, self::OUTPUT_FILE],
             ]);

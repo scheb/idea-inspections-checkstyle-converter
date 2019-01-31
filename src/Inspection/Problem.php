@@ -49,7 +49,7 @@ class Problem
         return $this->inspectionName;
     }
 
-    public function getFilename(): string
+    public function getFileName(): string
     {
         return $this->filename;
     }
