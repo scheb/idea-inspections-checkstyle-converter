@@ -1,0 +1,9 @@
+<problems>
+    <problem>
+        <file>file://$PROJECT_DIR$/src/Directory/ignored_inspection_file</file>
+        <line>1</line>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/ignored_inspection_file"/>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Ignored Inspection</problem_class>
+        <description>Ignored Inspection Message</description>
+    </problem>
+</problems>

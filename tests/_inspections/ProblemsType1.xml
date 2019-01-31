@@ -1,23 +1,37 @@
 <problems>
     <problem>
-        <file>file://$PROJECT_DIR$/src/Directory/file1</file>
+        <file>file://$PROJECT_DIR$/src/Directory/type1_1</file>
         <line>1</line>
-        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/file1"/>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/type1_1"/>
         <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Problem class 1</problem_class>
-        <description>Problem 1</description>
+        <description>Problem 1 Message</description>
     </problem>
     <problem>
-        <file>file://$PROJECT_DIR$/src/Directory/file1</file>
+        <file>file://$PROJECT_DIR$/src/Directory/type1_1</file>
         <line>2</line>
-        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/file1"/>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/type1_1"/>
         <problem_class severity="INFORMATION" attribute_key="WARNING_ATTRIBUTES">Problem class 2</problem_class>
-        <description>Problem 2</description>
+        <description>Problem 2 Message</description>
     </problem>
     <problem>
-        <file>file://$PROJECT_DIR$/src/Directory/file1</file>
+        <file>file://$PROJECT_DIR$/src/Directory/type1_1</file>
         <line>2</line>
-        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/file1"/>
-        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Problem class 2</problem_class>
-        <description>Problem 2</description>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/type1_1"/>
+        <problem_class severity="ERROR" attribute_key="WARNING_ATTRIBUTES">Problem class 3</problem_class>
+        <description>Problem 3 Message</description>
+    </problem>
+    <problem>
+        <file>file://$PROJECT_DIR$/src/Directory/type1_1</file>
+        <line>2</line>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/type1_1"/>
+        <problem_class severity="ERROR" attribute_key="WARNING_ATTRIBUTES">Ignored Message</problem_class>
+        <description>Ignored Message</description>
+    </problem>
+    <problem>
+        <file>file://$PROJECT_DIR$/src/Directory/ignored_file</file>
+        <line>2</line>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/ignored_file"/>
+        <problem_class severity="ERROR" attribute_key="WARNING_ATTRIBUTES">Ignored File</problem_class>
+        <description>Ignored File Message</description>
     </problem>
 </problems>

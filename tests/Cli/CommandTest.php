@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Scheb\InspectionsConverter\Test\Cli;
 
 use Scheb\InspectionConverter\Cli\Command;
@@ -13,6 +12,7 @@ class CommandTest extends TestCase
     private const PROJECT_PATH = '/project/path';
     private const INSPECTIONS_DIR = __DIR__.'/../_inspections';
     private const OUTPUT_FILE = __DIR__.'/../_output/checkstyle.xml';
+    private const EXPECTED_FILE = __DIR__.'/../_output/expected.xml';
 
     protected function setUp()
     {
@@ -43,9 +43,18 @@ class CommandTest extends TestCase
             ->expects($this->any())
             ->method('getArgument')
             ->willReturnMap([
-                [Command::OPT_PROJECT_ROOT, self::PROJECT_PATH],
                 [Command::ARG_INSPECTIONS_FOLDER, self::INSPECTIONS_DIR],
                 [Command::ARG_CHECKSTYLE_OUTPUT_FILE, self::OUTPUT_FILE],
+            ]);
+
+        $input
+            ->expects($this->any())
+            ->method('getOption')
+            ->willReturnMap([
+                [Command::OPT_PROJECT_ROOT, self::PROJECT_PATH],
+                [Command::OPT_IGNORE_INSPECTION, ['ig[n].re', 'Ig[n].re']],
+                [Command::OPT_IGNORE_FILE, ['ig[n].re', 'Ig[n].re']],
+                [Command::OPT_IGNORE_MESSAGE, ['ig[n].re', 'Ig[n].re']],
             ]);
 
         $command = new Command();
@@ -55,6 +64,7 @@ class CommandTest extends TestCase
     private function assertCheckstyle(): void
     {
         $this->assertFileExists(self::OUTPUT_FILE);
+        $this->assertFileEquals(self::EXPECTED_FILE, self::OUTPUT_FILE);
     }
 
     private function clean(): void

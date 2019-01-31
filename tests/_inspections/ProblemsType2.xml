@@ -1,0 +1,9 @@
+<problems>
+    <problem>
+        <file>file://$PROJECT_DIR$/src/Directory/type2_1</file>
+        <line>3</line>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/type2_1"/>
+        <problem_class severity="INFORMATION" attribute_key="WARNING_ATTRIBUTES">Problem class 3</problem_class>
+        <description>Problem 3 Message</description>
+    </problem>
+</problems>
