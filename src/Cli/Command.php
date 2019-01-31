@@ -75,7 +75,7 @@ class Command extends AbstractCommand
         $checkstyleFileDir = realpath(dirname($checkstyleFile));
         $checkstyleFileRealPath = realpath($checkstyleFile);
 
-        if ($checkstyleFileDir === false || !is_writeable($checkstyleFileDir) || ($checkstyleFileRealPath !== false && !is_writeable($checkstyleFileRealPath))) {
+        if (false === $checkstyleFileDir || !is_writeable($checkstyleFileDir) || (false !== $checkstyleFileRealPath && !is_writeable($checkstyleFileRealPath))) {
             throw new \InvalidArgumentException('Argument "'.self::ARG_CHECKSTYLE_OUTPUT_FILE.'" must be a path to writable file');
         }
 

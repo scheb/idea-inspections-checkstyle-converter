@@ -44,11 +44,11 @@ class ProblemIterator implements \IteratorAggregate
     private function iterateXml(): \Traversable
     {
         $chunk = '';
-        while(!$this->fileReader->eof()) {
+        while (!$this->fileReader->eof()) {
             $chunk .= $this->fileReader->read(self::CHUNK_BYTES);
-            while (($startPos = strpos($chunk, self::XML_START)) !== false) {
+            while (false !== ($startPos = strpos($chunk, self::XML_START))) {
                 $endPos = strpos($chunk, self::XML_END);
-                if ($endPos === false || $endPos < $startPos) {
+                if (false === $endPos || $endPos < $startPos) {
                     break; // End element not found, read another chunk
                 }
 

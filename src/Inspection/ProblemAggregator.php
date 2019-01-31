@@ -60,7 +60,7 @@ class ProblemAggregator
 
     private function createRegex(string $pattern): string
     {
-        return '#'.str_replace('#','\\#', $pattern).'#';
+        return '#'.str_replace('#', '\\#', $pattern).'#';
     }
 
     private function matchRegex(string $value, array $patterns): bool
