@@ -38,9 +38,9 @@ class Command extends AbstractCommand
             ->addArgument(self::ARG_INSPECTIONS_FOLDER, InputArgument::REQUIRED, 'Folder with the inspections XML files')
             ->addArgument(self::ARG_CHECKSTYLE_OUTPUT_FILE, InputArgument::REQUIRED, 'Folder with the inspections XML files')
             ->addOption(self::OPT_PROJECT_ROOT, 'r', InputOption::VALUE_REQUIRED, 'Path to the project root', '')
-            ->addOption(self::OPT_IGNORE_INSPECTION, 'ii', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore inspections matching the regex pattern')
-            ->addOption(self::OPT_IGNORE_MESSAGE, 'im', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore messages matching the regex pattern')
-            ->addOption(self::OPT_IGNORE_FILE, 'if', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern');
+            ->addOption(self::OPT_IGNORE_INSPECTION, 'i', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore inspections matching the regex pattern')
+            ->addOption(self::OPT_IGNORE_MESSAGE, 'm', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore messages matching the regex pattern')
+            ->addOption(self::OPT_IGNORE_FILE, 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
