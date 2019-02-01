@@ -29,9 +29,9 @@ Arguments:
 
 Options:
   -r, --projectRoot=PROJECTROOT             Path to the project root
-  -ii, --ignoreInspection=IGNOREINSPECTION  Ignore inspections matching the regex pattern (multiple values allowed)
-  -im, --ignoreMessage=IGNOREMESSAGE        Ignore messages matching the regex pattern (multiple values allowed)
-  -if, --ignoreFile=IGNOREFILE              Ignore files matching the regex pattern (multiple values allowed)
+  -i, --ignoreInspection=IGNOREINSPECTION  Ignore inspections matching the regex pattern (multiple values allowed)
+  -m, --ignoreMessage=IGNOREMESSAGE        Ignore messages matching the regex pattern (multiple values allowed)
+  -f, --ignoreFile=IGNOREFILE              Ignore files matching the regex pattern (multiple values allowed)
 ```
 
 Example:
