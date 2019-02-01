@@ -7,6 +7,9 @@ class ProblemFactory
     public function create(string $projectRoot, string $xmlFilename, \SimpleXMLElement $problemXml): Problem
     {
         $projectRoot = rtrim($projectRoot, '\\/');
+        if ($projectRoot) {
+            $projectRoot .= '/';
+        }
         $problem = new Problem(
             $this->getInspectionName($xmlFilename),
             $this->getFilename($projectRoot, $problemXml),
@@ -28,6 +31,6 @@ class ProblemFactory
 
     private function getFilename(string $projectRoot, \SimpleXMLElement $problemXml): string
     {
-        return str_replace('file://$PROJECT_DIR$/', $projectRoot.'/', (string) $problemXml->file);
+        return str_replace('file://$PROJECT_DIR$/', $projectRoot, (string) $problemXml->file);
     }
 }
