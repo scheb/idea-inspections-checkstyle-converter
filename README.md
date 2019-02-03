@@ -24,11 +24,11 @@ Usage
 ./vendor/bin/inspection-converter [inspectionsFolder] [checkstyleOutputFile]
 
 Arguments:
-  inspectionsFolder                         Folder with the inspections XML files
-  checkstyleOutputFile                      Folder with the inspections XML files
+  inspectionsFolder                        Folder with the inspections XML files
+  checkstyleOutputFile                     Checkstyle file to be written
 
 Options:
-  -r, --projectRoot=PROJECTROOT             Path to the project root
+  -r, --projectRoot=PROJECTROOT            Path to the project root
   -i, --ignoreInspection=IGNOREINSPECTION  Ignore inspections matching the regex pattern (multiple values allowed)
   -m, --ignoreMessage=IGNOREMESSAGE        Ignore messages matching the regex pattern (multiple values allowed)
   -f, --ignoreFile=IGNOREFILE              Ignore files matching the regex pattern (multiple values allowed)
