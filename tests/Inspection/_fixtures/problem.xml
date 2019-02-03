@@ -3,5 +3,5 @@
     <line>123</line>
     <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/file"/>
     <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Problem class</problem_class>
-    <description>Description</description>
+    <description>Description &amp;gt;</description>
 </problem>

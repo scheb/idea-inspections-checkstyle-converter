@@ -26,7 +26,7 @@ class ProblemFactoryTest extends TestCase
         $xmlElement = $this->loadXmlElement();
         $createdProblem = $this->factory->create('/path/to/project/', '/inspections/InspectionName.xml', $xmlElement);
 
-        $expectedProblem = new Problem('InspectionName', '/path/to/project/src/file', 123, 'Problem class', 'WARNING', 'Description');
+        $expectedProblem = new Problem('InspectionName', '/path/to/project/src/file', 123, 'Problem class', 'WARNING', 'Description >');
         $this->assertEquals($expectedProblem, $createdProblem);
     }
 
@@ -38,7 +38,7 @@ class ProblemFactoryTest extends TestCase
         $xmlElement = $this->loadXmlElement();
         $createdProblem = $this->factory->create('', '/inspections/InspectionName.xml', $xmlElement);
 
-        $expectedProblem = new Problem('InspectionName', 'src/file', 123, 'Problem class', 'WARNING', 'Description');
+        $expectedProblem = new Problem('InspectionName', 'src/file', 123, 'Problem class', 'WARNING', 'Description >');
         $this->assertEquals($expectedProblem, $createdProblem);
     }
 

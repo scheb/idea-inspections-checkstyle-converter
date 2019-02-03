@@ -16,7 +16,7 @@ class ProblemFactory
             (int) $problemXml->line,
             (string) $problemXml->problem_class,
             (string) $problemXml->problem_class['severity'],
-            (string) $problemXml->description
+            html_entity_decode((string) $problemXml->description)
         );
 
         return $problem;
