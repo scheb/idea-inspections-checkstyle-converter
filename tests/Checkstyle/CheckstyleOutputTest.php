@@ -1,14 +1,14 @@
 <?php
 
-namespace Scheb\InspectionConverter\Test\Checkstyle;
+namespace Scheb\Inspection\Converter\Test\Checkstyle;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Scheb\InspectionConverter\Checkstyle\CheckstyleGenerator;
-use Scheb\InspectionConverter\Checkstyle\CheckstyleOutput;
-use Scheb\InspectionConverter\FileSystem\FileWriter;
-use Scheb\InspectionConverter\Inspection\Problem;
-use Scheb\InspectionConverter\Inspection\ProblemSummary;
-use Scheb\InspectionConverter\Test\TestCase;
+use Scheb\Inspection\Converter\Checkstyle\CheckstyleGenerator;
+use Scheb\Inspection\Converter\Checkstyle\CheckstyleOutput;
+use Scheb\Inspection\Converter\Test\TestCase;
+use Scheb\Inspection\Core\FileSystem\FileWriter;
+use Scheb\Inspection\Core\Inspection\Problem;
+use Scheb\Inspection\Core\Inspection\ProblemSummary;
 
 class CheckstyleOutputTest extends TestCase
 {

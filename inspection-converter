@@ -26,5 +26,5 @@ if (!defined('IICC_COMPOSER_INSTALL')) {
 
 require IICC_COMPOSER_INSTALL;
 
-$application = new Scheb\InspectionConverter\Cli\Application;
+$application = new Scheb\Inspection\Converter\Cli\Application;
 $application->run();

@@ -1,10 +1,10 @@
 <?php
 
-namespace Scheb\InspectionConverter\Checkstyle;
+namespace Scheb\Inspection\Converter\Checkstyle;
 
-use Scheb\InspectionConverter\FileSystem\FileWriter;
-use Scheb\InspectionConverter\Inspection\Problem;
-use Scheb\InspectionConverter\Inspection\ProblemSummary;
+use Scheb\Inspection\Core\FileSystem\FileWriter;
+use Scheb\Inspection\Core\Inspection\Problem;
+use Scheb\Inspection\Core\Inspection\ProblemSummary;
 
 class CheckstyleOutput
 {

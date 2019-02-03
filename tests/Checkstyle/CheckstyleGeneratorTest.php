@@ -1,10 +1,10 @@
 <?php
 
-namespace Scheb\InspectionConverter\Test\Checkstyle;
+namespace Scheb\Inspection\Converter\Test\Checkstyle;
 
-use Scheb\InspectionConverter\Checkstyle\CheckstyleGenerator;
-use Scheb\InspectionConverter\Inspection\Problem;
-use Scheb\InspectionConverter\Test\TestCase;
+use Scheb\Inspection\Converter\Checkstyle\CheckstyleGenerator;
+use Scheb\Inspection\Converter\Test\TestCase;
+use Scheb\Inspection\Core\Inspection\Problem;
 
 class CheckstyleGeneratorTest extends TestCase
 {

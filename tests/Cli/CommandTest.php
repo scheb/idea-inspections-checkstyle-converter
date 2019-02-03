@@ -2,8 +2,8 @@
 
 namespace Scheb\InspectionsConverter\Test\Cli;
 
-use Scheb\InspectionConverter\Cli\Command;
-use Scheb\InspectionConverter\Test\TestCase;
+use Scheb\Inspection\Converter\Cli\Command;
+use Scheb\Inspection\Converter\Test\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -26,7 +26,7 @@ class CommandTest extends TestCase
 
     /**
      * @test
-     * @covers \Scheb\InspectionConverter\Cli\Command
+     * @covers \Scheb\Inspection\Converter\Cli\Command
      */
     public function execute_inspectionsAndOutputGiven_createCheckstyleFile(): void
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Scheb\InspectionConverter\Cli;
+namespace Scheb\Inspection\Converter\Cli;
 
-use Scheb\InspectionConverter\Checkstyle\CheckstyleOutput;
-use Scheb\InspectionConverter\Inspection\ProblemAggregator;
-use Scheb\InspectionConverter\Inspection\ProblemIteratorFactory;
-use Scheb\InspectionConverter\Inspection\ProblemSummary;
+use Scheb\Inspection\Converter\Checkstyle\CheckstyleOutput;
+use Scheb\Inspection\Core\Inspection\ProblemAggregator;
+use Scheb\Inspection\Core\Inspection\ProblemIteratorFactory;
+use Scheb\Inspection\Core\Inspection\ProblemSummary;
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

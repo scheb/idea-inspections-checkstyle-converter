@@ -1,8 +1,8 @@
 <?php
 
-namespace Scheb\InspectionConverter\Checkstyle;
+namespace Scheb\Inspection\Converter\Checkstyle;
 
-use Scheb\InspectionConverter\Inspection\Problem;
+use Scheb\Inspection\Core\Inspection\Problem;
 
 class CheckstyleGenerator
 {

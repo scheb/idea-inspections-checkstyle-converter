@@ -13,6 +13,7 @@
     "require": {
         "php": "^7.1.3",
         "symfony/console": "^2.7|^3.0|^4.0",
+        "scheb/idea-inspections-core": "^1.0",
         "ext-simplexml": "*"
     },
     "require-dev": {
@@ -23,12 +24,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Scheb\\InspectionConverter\\": "src/"
+            "Scheb\\Inspection\\Converter\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Scheb\\InspectionConverter\\Test\\": "tests/"
+            "Scheb\\Inspection\\Converter\\Test\\": "tests/"
         }
     },
     "config": {

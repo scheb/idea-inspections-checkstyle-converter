@@ -1,6 +1,6 @@
 <?php
 
-namespace Scheb\InspectionConverter\Cli;
+namespace Scheb\Inspection\Converter\Cli;
 
 use Symfony\Component\Console\Application as AbstractApplication;
 use Symfony\Component\Console\Input\ArrayInput;
