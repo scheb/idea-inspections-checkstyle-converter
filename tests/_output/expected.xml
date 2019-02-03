@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="4.3">
   <file name="/project/path/src/Directory/type1_1">
-    <error line="1" severity="warning" message="Problem 1 Message" source="ProblemsType1.Problem class 1"/>
-    <error line="2" severity="information" message="Problem 2 Message" source="ProblemsType1.Problem class 2"/>
-    <error line="2" severity="error" message="Problem 3 Message" source="ProblemsType1.Problem class 3"/>
+    <error line="1" severity="warning" message="Problem 1 Message" source="Problem class 1"/>
+    <error line="2" severity="information" message="Problem 2 Message" source="Problem class 2"/>
+    <error line="2" severity="error" message="Problem 3 Message" source="Problem class 3"/>
   </file>
   <file name="/project/path/src/Directory/type2_1">
-    <error line="3" severity="information" message="Problem 3 Message" source="ProblemsType2.Problem class 3"/>
+    <error line="3" severity="information" message="Problem 3 Message" source="Problem class 3"/>
   </file>
 </checkstyle>

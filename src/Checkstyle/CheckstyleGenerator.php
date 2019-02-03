@@ -31,7 +31,7 @@ class CheckstyleGenerator
                 $problem->getLine(),
                 htmlspecialchars(strtolower($problem->getSeverity())),
                 htmlspecialchars($problem->getDescription()),
-                htmlspecialchars($problem->getInspectionName().'.'.$problem->getClass())
+                htmlspecialchars($problem->getClass())
             );
         }
         $xml .= '  </file>';
