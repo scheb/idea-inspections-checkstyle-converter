@@ -28,10 +28,13 @@ Arguments:
   checkstyleOutputFile                     Checkstyle file to be written
 
 Options:
-  -r, --projectRoot=PROJECTROOT            Path to the project root
+  -r, --projectRoot=PROJECTROOT            Path to the project root [default: ""]
   -i, --ignoreInspection=IGNOREINSPECTION  Ignore inspections matching the regex pattern (multiple values allowed)
   -m, --ignoreMessage=IGNOREMESSAGE        Ignore messages matching the regex pattern (multiple values allowed)
   -f, --ignoreFile=IGNOREFILE              Ignore files matching the regex pattern (multiple values allowed)
+  -s, --ignoreSeverity=IGNORESEVERITY      Ignore severities (exact match) (multiple values allowed)
+  -S, --mapSeverity=MAPSEVERITY            Map severity from to, format "input:output" (multiple values allowed)
+  -D, --defaultSeverity=DEFAULTSEVERITY    Used in combination with mapSeverity to define the default severity
 ```
 
 Example:
