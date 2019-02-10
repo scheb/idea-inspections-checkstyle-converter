@@ -14,8 +14,8 @@ class CheckstyleGeneratorTest extends TestCase
     public function generateFileXmlElement_problemsGiven_returnXml(): void
     {
         $problems = [
-            new Problem('InspectionName1', 'file.txt', 1, 'InspectionClass1', 'ERROR', 'Error description'),
-            new Problem('InspectionName2', 'file.txt', 2, 'InspectionClass2', 'WARNING', 'Warning description'),
+            new Problem('InspectionName1', 'file.txt', 1, 'Inspection.Class1.', 'ERROR', 'Error description'),
+            new Problem('InspectionName2', 'file.txt', 2, 'Inspection.Class2.', 'WARNING', 'Warning description'),
         ];
 
         $generator = new CheckstyleGenerator();
@@ -23,8 +23,8 @@ class CheckstyleGeneratorTest extends TestCase
 
         $expectedXml = <<<XML
   <file name="file.txt">
-    <error line="1" severity="error" message="Error description" source="InspectionClass1"/>
-    <error line="2" severity="warning" message="Warning description" source="InspectionClass2"/>
+    <error line="1" severity="error" message="Error description" source="Inspection;Class1"/>
+    <error line="2" severity="warning" message="Warning description" source="Inspection;Class2"/>
   </file>
 XML;
 

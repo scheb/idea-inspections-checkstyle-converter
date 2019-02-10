@@ -31,11 +31,17 @@ class CheckstyleGenerator
                 $problem->getLine(),
                 htmlspecialchars(strtolower($problem->getSeverity())),
                 htmlspecialchars($problem->getDescription()),
-                htmlspecialchars($problem->getClass())
+                htmlspecialchars($this->sanitizeClass($problem))
             );
         }
         $xml .= '  </file>';
 
         return $xml;
+    }
+
+    private function sanitizeClass(Problem $problem): string
+    {
+        // Jenkins Next Generation Warnings plugin uses . to split the class name
+        return str_replace('.', ';', rtrim($problem->getClass(), '.'));
     }
 }
