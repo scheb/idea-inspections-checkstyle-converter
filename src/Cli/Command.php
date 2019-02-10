@@ -21,6 +21,7 @@ class Command extends AbstractCommand
     public const OPT_IGNORE_INSPECTION = 'ignoreInspection';
     public const OPT_IGNORE_MESSAGE = 'ignoreMessage';
     public const OPT_IGNORE_FILE = 'ignoreFile';
+    public const OPT_IGNORE_SEVERITY = 'ignoreSeverity';
 
     /**
      * @var InputInterface
@@ -41,7 +42,8 @@ class Command extends AbstractCommand
             ->addOption(self::OPT_PROJECT_ROOT, 'r', InputOption::VALUE_REQUIRED, 'Path to the project root', '')
             ->addOption(self::OPT_IGNORE_INSPECTION, 'i', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore inspections matching the regex pattern')
             ->addOption(self::OPT_IGNORE_MESSAGE, 'm', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore messages matching the regex pattern')
-            ->addOption(self::OPT_IGNORE_FILE, 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern');
+            ->addOption(self::OPT_IGNORE_FILE, 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern')
+            ->addOption(self::OPT_IGNORE_SEVERITY, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore severities (exact match)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -66,6 +68,7 @@ class Command extends AbstractCommand
         $ignoreInspections = $this->input->getOption(self::OPT_IGNORE_INSPECTION) ?? [];
         $ignoreFiles = $this->input->getOption(self::OPT_IGNORE_FILE) ?? [];
         $ignoreMessages = $this->input->getOption(self::OPT_IGNORE_MESSAGE) ?? [];
+        $ignoreSeverities = $this->input->getOption(self::OPT_IGNORE_SEVERITY) ?? [];
 
         $inspectionsFolder = realpath($this->input->getArgument(self::ARG_INSPECTIONS_FOLDER));
         if (false === $inspectionsFolder || !is_dir($inspectionsFolder)) {
@@ -85,7 +88,7 @@ class Command extends AbstractCommand
         }
 
         $inspectionsFiles = $this->findXmlFiles($inspectionsFolder);
-        $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot, $ignoreInspections, $ignoreFiles, $ignoreMessages);
+        $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot, $ignoreInspections, $ignoreFiles, $ignoreMessages, $ignoreSeverities);
         $this->writeCheckstyle($problemsByFile, $checkstyleFile);
     }
 
@@ -98,11 +101,11 @@ class Command extends AbstractCommand
         return $inspectionsFiles;
     }
 
-    private function readInspections(array $inspectionsFiles, string $projectRoot, array $ignoreInspections, array $ignoreFiles, array $ignoreMessages): ProblemSummary
+    private function readInspections(array $inspectionsFiles, string $projectRoot, array $ignoreInspections, array $ignoreFiles, array $ignoreMessages, $ignoreSeverities): ProblemSummary
     {
         $this->output->write('Read inspections ...');
 
-        $aggregator = new ProblemAggregator(new ProblemIteratorFactory($ignoreInspections, $ignoreFiles, $ignoreMessages, []), new ProblemFactory());
+        $aggregator = new ProblemAggregator(new ProblemIteratorFactory($ignoreInspections, $ignoreFiles, $ignoreMessages, $ignoreSeverities), new ProblemFactory());
         $summary = $aggregator->readInspections($inspectionsFiles, $projectRoot);
 
         $this->output->writeln(' Done');

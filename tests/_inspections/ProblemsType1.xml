@@ -34,4 +34,11 @@
         <problem_class severity="ERROR" attribute_key="WARNING_ATTRIBUTES">Ignored File</problem_class>
         <description>Ignored File Message</description>
     </problem>
+    <problem>
+        <file>file://$PROJECT_DIR$/src/Directory/ignored_severity</file>
+        <line>2</line>
+        <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/src/Directory/ignored_severity"/>
+        <problem_class severity="IGNORED" attribute_key="WARNING_ATTRIBUTES">Ignored Severity</problem_class>
+        <description>Ignored Severity Message</description>
+    </problem>
 </problems>

@@ -55,6 +55,7 @@ class CommandTest extends TestCase
                 [Command::OPT_IGNORE_INSPECTION, ['ig[n].re', 'Ig[n].re']],
                 [Command::OPT_IGNORE_FILE, ['ig[n].re', 'Ig[n].re']],
                 [Command::OPT_IGNORE_MESSAGE, ['ig[n].re', 'Ig[n].re']],
+                [Command::OPT_IGNORE_SEVERITY, ['IGNORED']],
             ]);
 
         $command = new Command();
