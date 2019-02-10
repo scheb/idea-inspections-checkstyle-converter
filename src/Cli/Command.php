@@ -3,6 +3,7 @@
 namespace Scheb\Inspection\Converter\Cli;
 
 use Scheb\Inspection\Converter\Checkstyle\CheckstyleOutput;
+use Scheb\Inspection\Converter\Checkstyle\SeverityMapping;
 use Scheb\Inspection\Core\Inspection\ProblemAggregator;
 use Scheb\Inspection\Core\Inspection\ProblemFactory;
 use Scheb\Inspection\Core\Inspection\ProblemIteratorFactory;
@@ -22,6 +23,8 @@ class Command extends AbstractCommand
     public const OPT_IGNORE_MESSAGE = 'ignoreMessage';
     public const OPT_IGNORE_FILE = 'ignoreFile';
     public const OPT_IGNORE_SEVERITY = 'ignoreSeverity';
+    public const OPT_MAP_SEVERITY = 'mapSeverity';
+    public const OPT_DEFAULT_SEVERITY = 'defaultSeverity';
 
     /**
      * @var InputInterface
@@ -43,7 +46,9 @@ class Command extends AbstractCommand
             ->addOption(self::OPT_IGNORE_INSPECTION, 'i', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore inspections matching the regex pattern')
             ->addOption(self::OPT_IGNORE_MESSAGE, 'm', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore messages matching the regex pattern')
             ->addOption(self::OPT_IGNORE_FILE, 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore files matching the regex pattern')
-            ->addOption(self::OPT_IGNORE_SEVERITY, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore severities (exact match)');
+            ->addOption(self::OPT_IGNORE_SEVERITY, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Ignore severities (exact match)')
+            ->addOption(self::OPT_MAP_SEVERITY, 'S', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Map severity from to, format "input:output"')
+            ->addOption(self::OPT_DEFAULT_SEVERITY, 'D', InputOption::VALUE_REQUIRED, 'Used in combination with '.self::OPT_MAP_SEVERITY.' to define the default severity');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -69,6 +74,7 @@ class Command extends AbstractCommand
         $ignoreFiles = $this->input->getOption(self::OPT_IGNORE_FILE) ?? [];
         $ignoreMessages = $this->input->getOption(self::OPT_IGNORE_MESSAGE) ?? [];
         $ignoreSeverities = $this->input->getOption(self::OPT_IGNORE_SEVERITY) ?? [];
+        $severityMapping = $this->getSeverityMapping();
 
         $inspectionsFolder = realpath($this->input->getArgument(self::ARG_INSPECTIONS_FOLDER));
         if (false === $inspectionsFolder || !is_dir($inspectionsFolder)) {
@@ -89,7 +95,22 @@ class Command extends AbstractCommand
 
         $inspectionsFiles = $this->findXmlFiles($inspectionsFolder);
         $problemsByFile = $this->readInspections($inspectionsFiles, $projectRoot, $ignoreInspections, $ignoreFiles, $ignoreMessages, $ignoreSeverities);
-        $this->writeCheckstyle($problemsByFile, $checkstyleFile);
+        $this->writeCheckstyle($problemsByFile, $severityMapping, $checkstyleFile);
+    }
+
+    private function getSeverityMapping(): SeverityMapping
+    {
+        $severityMapOptions = $this->input->getOption(self::OPT_MAP_SEVERITY) ?? [];
+        $severityMap = [];
+        foreach ($severityMapOptions as $severityMapOption) {
+            $inOut = explode(':', $severityMapOption, 2);
+            if (!count($inOut) == 2) {
+                throw new \InvalidArgumentException('Option "'.self::OPT_MAP_SEVERITY.'" must be format "input:output"');
+            }
+            $severityMap[$inOut[0]] = $inOut[1];
+        }
+
+        return new SeverityMapping($severityMap, $this->input->getOption(self::OPT_DEFAULT_SEVERITY));
     }
 
     private function findXmlFiles(string $inspectionsFolder): array
@@ -115,10 +136,10 @@ class Command extends AbstractCommand
         return $summary;
     }
 
-    private function writeCheckstyle(ProblemSummary $problemsByFile, string $checkstyleFile): void
+    private function writeCheckstyle(ProblemSummary $problemsByFile, SeverityMapping $severityMapping, string $checkstyleFile): void
     {
         $this->output->write('Write checkstyle file ...');
-        $checkstyleOutput = CheckstyleOutput::create($checkstyleFile);
+        $checkstyleOutput = CheckstyleOutput::create($severityMapping, $checkstyleFile);
         $checkstyleOutput->outputCheckstyle($problemsByFile);
         $this->output->writeln(' Done');
     }

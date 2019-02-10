@@ -6,6 +6,16 @@ use Scheb\Inspection\Core\Inspection\Problem;
 
 class CheckstyleGenerator
 {
+    /**
+     * @var SeverityMapping
+     */
+    private $severityMapping;
+
+    public function __construct(SeverityMapping $severityMapping)
+    {
+        $this->severityMapping = $severityMapping;
+    }
+
     public function getHeader(): string
     {
         return '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<checkstyle version="4.3">';
@@ -29,7 +39,7 @@ class CheckstyleGenerator
             $xml .= sprintf(
                 '    <error line="%s" column="0" severity="%s" message="%s" source="%s"/>'."\n",
                 $problem->getLine(),
-                htmlspecialchars(strtolower($problem->getSeverity())),
+                htmlspecialchars($this->severityMapping->mapSeverity($problem->getSeverity())),
                 htmlspecialchars($problem->getDescription()),
                 htmlspecialchars($this->sanitizeClass($problem))
             );

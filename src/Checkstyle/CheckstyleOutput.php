@@ -24,9 +24,9 @@ class CheckstyleOutput
         $this->fileWriter = $fileWriter;
     }
 
-    public static function create(string $outputFile): self
+    public static function create(SeverityMapping $severityMapping, string $outputFile): self
     {
-        return new self(new CheckstyleGenerator(), new FileWriter($outputFile));
+        return new self(new CheckstyleGenerator($severityMapping), new FileWriter($outputFile));
     }
 
     public function outputCheckstyle(ProblemSummary $problemSummary): void

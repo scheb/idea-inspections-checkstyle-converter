@@ -3,6 +3,7 @@
 namespace Scheb\Inspection\Converter\Test\Checkstyle;
 
 use Scheb\Inspection\Converter\Checkstyle\CheckstyleGenerator;
+use Scheb\Inspection\Converter\Checkstyle\SeverityMapping;
 use Scheb\Inspection\Converter\Test\TestCase;
 use Scheb\Inspection\Core\Inspection\Problem;
 
@@ -18,7 +19,16 @@ class CheckstyleGeneratorTest extends TestCase
             new Problem('InspectionName2', 'file.txt', 2, 'Inspection.Class2.', 'WARNING', 'Warning description'),
         ];
 
-        $generator = new CheckstyleGenerator();
+        $mapping = $this->createMock(SeverityMapping::class);
+        $mapping
+            ->expects($this->any())
+            ->method('mapSeverity')
+            ->willReturnMap([
+                ['ERROR', 'error'],
+                ['WARNING', 'warning'],
+            ]);
+
+        $generator = new CheckstyleGenerator($mapping);
         $xml = $generator->generateFileXmlElement('file.txt', $problems);
 
         $expectedXml = <<<XML
