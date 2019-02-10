@@ -4,6 +4,7 @@ namespace Scheb\Inspection\Converter\Cli;
 
 use Scheb\Inspection\Converter\Checkstyle\CheckstyleOutput;
 use Scheb\Inspection\Core\Inspection\ProblemAggregator;
+use Scheb\Inspection\Core\Inspection\ProblemFactory;
 use Scheb\Inspection\Core\Inspection\ProblemIteratorFactory;
 use Scheb\Inspection\Core\Inspection\ProblemSummary;
 use Symfony\Component\Console\Command\Command as AbstractCommand;
@@ -101,7 +102,7 @@ class Command extends AbstractCommand
     {
         $this->output->write('Read inspections ...');
 
-        $aggregator = new ProblemAggregator(new ProblemIteratorFactory(), $ignoreInspections, $ignoreFiles, $ignoreMessages);
+        $aggregator = new ProblemAggregator(new ProblemIteratorFactory($ignoreInspections, $ignoreFiles, $ignoreMessages, []), new ProblemFactory());
         $summary = $aggregator->readInspections($inspectionsFiles, $projectRoot);
 
         $this->output->writeln(' Done');

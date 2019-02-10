@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.1.3",
         "symfony/console": "^2.7|^3.0|^4.0",
-        "scheb/idea-inspections-core": "^1.0",
+        "scheb/idea-inspections-core": "^2.0",
         "ext-simplexml": "*"
     },
     "require-dev": {
