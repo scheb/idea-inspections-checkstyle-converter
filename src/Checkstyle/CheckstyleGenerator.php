@@ -27,7 +27,7 @@ class CheckstyleGenerator
         $xml = sprintf('  <file name="%s">'."\n", htmlspecialchars($fileName));
         foreach ($problems as $problem) {
             $xml .= sprintf(
-                '    <error line="%s" severity="%s" message="%s" source="%s"/>'."\n",
+                '    <error line="%s" column="0" severity="%s" message="%s" source="%s"/>'."\n",
                 $problem->getLine(),
                 htmlspecialchars(strtolower($problem->getSeverity())),
                 htmlspecialchars($problem->getDescription()),

@@ -23,8 +23,8 @@ class CheckstyleGeneratorTest extends TestCase
 
         $expectedXml = <<<XML
   <file name="file.txt">
-    <error line="1" severity="error" message="Error description" source="Inspection;Class1"/>
-    <error line="2" severity="warning" message="Warning description" source="Inspection;Class2"/>
+    <error line="1" column="0" severity="error" message="Error description" source="Inspection;Class1"/>
+    <error line="2" column="0" severity="warning" message="Warning description" source="Inspection;Class2"/>
   </file>
 XML;
 
